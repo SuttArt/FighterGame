@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fighting Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="container">
+    <div id="header">
+        <!-- player health -->
+        <div id="playerContainer" class="healthContainer">
+            <div id="playerHealth"></div>
+            <div id="playerHealthBar" class="healthBar"></div>
+        </div>
+        <!-- timer -->
+        <div id="timer">10</div>
+        <!--enemy health -->
+        <div id="enemyContainer" class="healthContainer">
+            <div id="enemyHealth"></div>
+            <div id="enemyHealthBar" class="healthBar"></div>
+        </div>
+    </div>
+    <div id="displayText">Tie</div>
+    <canvas id="gameCanvas"></canvas>
+</div>
+<script type="module" src="src/index.js"></script>
+</body>
+</html>

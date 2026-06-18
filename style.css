@@ -1,0 +1,78 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+#container {
+    position: relative;
+    display: inline-block;
+}
+
+
+#header {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 0 20px 0 20px;
+}
+
+
+.healthContainer {
+    position: relative;
+    height: 30px;
+    width: 100%;
+}
+
+.healthBar {
+    position: absolute;
+    background-color: blue;
+    inset: 0 0 0 0;
+    width: inherit;
+    height: inherit;
+}
+
+#playerContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#playerHealth {
+    background-color: yellow;
+    height: inherit;
+    width: inherit;
+}
+
+#playerHealthBar {
+    left: auto;
+}
+
+#timer {
+    background-color: red;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#enemyHealth {
+    background-color: yellow;
+    height: inherit;
+}
+
+
+#displayText {
+    position: absolute;
+    color: white;
+    inset: 0 0 0 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
