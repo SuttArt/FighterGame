@@ -1,4 +1,5 @@
-import {Sprite} from './classes.js';
+import {Fighter, Sprite} from './classes.js';
+import * as utils from './utils.js'
 
 const canvas = document.getElementById("gameCanvas")
 const ctx = canvas.getContext("2d");
@@ -6,28 +7,83 @@ const ctx = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 576;
 
-
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-const player_1 = new Sprite(
+// just calculated it. I know, that my background has size of 320x180
+// My canvas is 1024x576, what make 1024/320 = 3.2 and 576/180 = 3.2
+const backgroundScale = 3.2
+
+// define background sprites to draw
+const background = [
+    new Sprite({
+        position: {
+            x: 0,
+            y: 0,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/background_layer_1.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+    }),
+    new Sprite({
+        position: {
+            x: 0,
+            y: 0,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/background_layer_2.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+    }),
+    new Sprite({
+        position: {
+            x: 0,
+            y: 0,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/background_layer_3.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+    }),
+]
+
+// define shop sprite
+const shop = new Sprite({
+    position: {
+        x: 600,
+        y: 130,
+    },
+    canvRef: {canvas, ctx},
+    imageSrc: '../assets/shop_anim.png',
+    scale: 2.75,
+    framesMax: 6
+})
+
+
+// define first player
+const player_1 = new Fighter(
     {
         position: {x: 0, y: 0},
-        canvRef: {canvas: canvas, ctx: ctx},
+        canvRef: {canvas, ctx},
         velocity: {x: 0, y: 10},
         offset: {x: 0, y: 0},
     }
 );
 
-
-const player_2 = new Sprite(
+// define second player
+const player_2 = new Fighter(
     {
         position: {x: 400, y: 0},
-        canvRef: {canvas: canvas, ctx: ctx},
+        canvRef: {canvas, ctx},
         velocity: {x: 0, y: 10},
         color: 'blue',
         offset: {x: -50, y: 0},
     });
 
+// Object for tracking the keys to be pressed
 const keys = {
     a: {
         pressed: false
@@ -43,50 +99,12 @@ const keys = {
     }
 }
 
+// How fast we can move left and right
 let velocityX = 5;
+// How fast we can jump
 let velocityY = 15;
 
-function rectangularCollision({rectangle1, rectangle2,}) {
-    return (
-        rectangle1.attackBox.position.x + rectangle1.attackBox.width >= rectangle2.position.x &&
-        rectangle1.attackBox.position.x <= rectangle2.position.x + rectangle2.width &&
-        rectangle1.attackBox.position.y + rectangle1.attackBox.height >= rectangle2.position.y &&
-        rectangle1.attackBox.position.y <= rectangle2.position.y + rectangle2.height
-    )
-}
-
-function determineWinner({player1, player2, timerId}) {
-    const displayText = document.getElementById("displayText")
-    displayText.style.display = 'flex';
-
-    if (player1.health === player2.health) {
-        displayText.innerText = 'Tie';
-    } else if (player1.health > player2.health) {
-        displayText.innerText = 'Player 1 Wins';
-    } else if (player1.health < player2.health) {
-        displayText.innerText = 'Player 2 Wins';
-    }
-
-    clearTimeout(timerId);
-    timeout = true
-}
-
-let timer = 5
-let timerId
-let timeout = false
-function decreaseTimer() {
-    timerId = setTimeout(decreaseTimer, 1000);
-    if (timer > 0) {
-        timer--
-        document.getElementById("timer").innerText = timer.toString()
-    }
-
-    if (timer === 0) {
-        determineWinner({player1: player_1, player2: player_2, timerId})
-    }
-}
-
-decreaseTimer();
+utils.decreaseTimer(player_1, player_2);
 
 function animate() {
     window.requestAnimationFrame(animate);
@@ -94,8 +112,10 @@ function animate() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // animate sprites
-    player_1.updateSpite()
-    player_2.updateSpite()
+    background.forEach(detail => detail.updateSprite())
+    shop.updateSprite()
+    player_1.updateSprite()
+    player_2.updateSprite()
 
     // reset velocity
     player_1.velocity.x = 0;
@@ -117,7 +137,7 @@ function animate() {
 
     // detect for collision
     if (
-        rectangularCollision({
+        utils.rectangularCollision({
             rectangle1: player_1,
             rectangle2: player_2
         }) &&
@@ -129,7 +149,7 @@ function animate() {
     }
 
     if (
-        rectangularCollision({
+        utils.rectangularCollision({
             rectangle1: player_2,
             rectangle2: player_1
         }) &&
@@ -141,8 +161,8 @@ function animate() {
     }
 
     // end game based on health
-    if ((player_2.health < 0 || player_1.health <= 0) && !timeout) {
-        determineWinner({player1: player_1, player2: player_2, timerId})
+    if ((player_2.health < 0 || player_1.health <= 0) && !utils.timeout) {
+        utils.determineWinner({player1: player_1, player2: player_2})
     }
 }
 

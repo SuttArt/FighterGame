@@ -1,5 +1,58 @@
 export class Sprite {
-    height = 150;
+    constructor({
+                    position,
+                    canvRef,
+                    imageSrc,
+                    scale = 1,
+                    framesMax = 1,
+                }) {
+        this.position = position;
+        this.canvRef = canvRef;
+        this.width = 50;
+        this.height = 150;
+        this.image = new Image();
+        this.image.src = imageSrc;
+        this.scale = scale;
+        this.framesMax = framesMax;
+        this.framesCurrent = 0;
+        this.framesElapsed = 0;
+        this.framesHold = 7; // to change speed animation
+    }
+
+
+    draw() {
+        this.canvRef.ctx.drawImage(
+            this.image,
+            // crop position in image itself
+            this.framesCurrent * (this.image.width / this.framesMax),
+            0,
+            // crop width and height
+            this.image.width / this.framesMax,
+            this.image.height,
+            // position of the image in canvas
+            this.position.x,
+            this.position.y,
+            (this.image.width / this.framesMax) * this.scale,
+            this.image.height * this.scale
+        );
+    }
+
+    updateSprite() {
+        this.draw()
+        this.framesElapsed++;
+
+        if (this.framesElapsed % this.framesHold === 0) {
+            if (this.framesCurrent < this.framesMax - 1) {
+                this.framesCurrent++
+            } else {
+                this.framesCurrent = 0
+            }
+        }
+    }
+
+}
+
+export class Fighter {
     gravity = 0.4
     lastKey
 
@@ -9,6 +62,7 @@ export class Sprite {
         this.canvRef = canvRef;
         this.velocity = velocity;
         this.width = 50;
+        this.height = 150;
         this.color = color;
         this.attackBox = {
             position: {
@@ -40,7 +94,7 @@ export class Sprite {
         }
     }
 
-    updateSpite() {
+    updateSprite() {
         this.draw()
         this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
         this.attackBox.position.y = this.position.y;
@@ -48,7 +102,7 @@ export class Sprite {
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y
 
-        if (this.position.y + this.height + this.velocity.y >= this.canvRef.ctx.canvas.height) {
+        if (this.position.y + this.height + this.velocity.y >= this.canvRef.ctx.canvas.height - 60) {
             this.velocity.y = 0;
         } else {
             this.velocity.y += this.gravity;
