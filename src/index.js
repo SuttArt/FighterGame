@@ -69,7 +69,32 @@ const player_1 = new Fighter(
         position: {x: 0, y: 0},
         canvRef: {canvas, ctx},
         velocity: {x: 0, y: 10},
-        offset: {x: 0, y: 0},
+        imageSrc: '../assets/player_1/idle.png',
+        framesMax: 8,
+        scale: 2.5,
+        offset: {x: 215, y: 157},
+        sprites: {
+            idle: {
+                imageSrc: '../assets/player_1/idle.png',
+                framesMax: 8,
+            },
+            run: {
+                imageSrc: '../assets/player_1/Run.png',
+                framesMax: 8,
+            },
+            jump: {
+                imageSrc: '../assets/player_1/Jump.png',
+                framesMax: 2,
+            },
+            fall: {
+                imageSrc: '../assets/player_1/Fall.png',
+                framesMax: 2,
+            },
+            attack1: {
+                imageSrc: '../assets/player_1/Attack1.png',
+                framesMax: 6,
+            }
+        }
     }
 );
 
@@ -115,7 +140,7 @@ function animate() {
     background.forEach(detail => detail.updateSprite())
     shop.updateSprite()
     player_1.updateSprite()
-    player_2.updateSprite()
+    // player_2.updateSprite()
 
     // reset velocity
     player_1.velocity.x = 0;
@@ -124,8 +149,18 @@ function animate() {
     // player 1 movement
     if (keys.d.pressed && player_1.lastKey === 'd') {
         player_1.velocity.x = velocityX
+        player_1.switchSprite('run')
     } else if (keys.a.pressed && player_1.lastKey === 'a') {
         player_1.velocity.x = -velocityX
+        player_1.switchSprite('run')
+    } else {
+        player_1.switchSprite('idle')
+    }
+
+    if (player_1.velocity.y < 0) {
+        player_1.switchSprite('jump')
+    } else if (player_1.velocity.y > 0) {
+        player_1.switchSprite('fall')
     }
 
     // player 2 movement
