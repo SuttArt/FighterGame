@@ -6,6 +6,8 @@ export class Sprite {
                     scale = 1,
                     framesMax = 1,
                     offset = {x: 0, y: 0},
+                    flip = false,
+                    crop = null
                 }) {
         this.position = position;
         this.canvRef = canvRef;
@@ -19,24 +21,77 @@ export class Sprite {
         this.framesElapsed = 0;
         this.framesHold = 7; // to change speed animation
         this.offset = offset;
+        this.flip = flip;
+        this.crop = crop;
     }
 
 
     draw() {
-        this.canvRef.ctx.drawImage(
-            this.image,
-            // crop position in image itself
-            this.framesCurrent * (this.image.width / this.framesMax),
-            0,
-            // crop width and height
-            this.image.width / this.framesMax,
-            this.image.height,
-            // position of the image in canvas
-            this.position.x - this.offset.x,
-            this.position.y - this.offset.y,
-            (this.image.width / this.framesMax) * this.scale,
-            this.image.height * this.scale
-        );
+        const ctx = this.canvRef.ctx;
+
+        const frameWidth = this.image.width / this.framesMax;
+        const frameHeight = this.image.height;
+
+        const cropX = this.crop
+            ? this.crop.x
+            : this.framesCurrent * frameWidth;
+        const cropY = this.crop
+            ? this.crop.y
+            : 0;
+        const cropWidth = this.crop
+            ? this.crop.width
+            : frameWidth;
+        const cropHeight = this.crop
+            ? this.crop.height
+            : frameHeight;
+
+        // important: use cropWidth / cropHeight here
+        const drawX = this.position.x - this.offset.x;
+        const drawY = this.position.y - this.offset.y;
+
+        const drawWidth = cropWidth * this.scale;
+        const drawHeight = cropHeight * this.scale;
+
+        if (this.flip) {
+            ctx.scale(-1, 1);
+
+            ctx.drawImage(
+                this.image,
+
+                // crop position in image itself
+                cropX,
+                cropY,
+                // crop width and height
+                cropWidth,
+                cropHeight,
+
+                // position of the image in canvas
+                // mirrored position
+                -drawX - drawWidth,
+                drawY,
+
+                drawWidth,
+                drawHeight
+            );
+        } else {
+            ctx.drawImage(
+                this.image,
+
+                // crop position in image itself
+                cropX,
+                cropY,
+                // crop width and height
+                cropWidth,
+                cropHeight,
+
+                // position of the image in canvas
+                drawX,
+                drawY,
+
+                drawWidth,
+                drawHeight
+            );
+        }
     }
 
     animateFrames() {
@@ -74,13 +129,15 @@ export class Fighter extends Sprite {
                     offset = {x: 0, y: 0},
                     sprites,
                     attackBox = {offset: {}, width: undefined, height: undefined},
+                    flip = false,
                 }) {
         super({
             position,
             imageSrc,
             scale,
             framesMax,
-            offset
+            offset,
+            flip
         });
 
         this.canvRef = canvRef;
@@ -126,6 +183,9 @@ export class Fighter extends Sprite {
 
             this.position.x += this.velocity.x;
             this.position.y += this.velocity.y
+
+            // draw players
+            // this.canvRef.ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
 
             // gravity function
             if (this.position.y + this.height + this.velocity.y >= this.canvRef.ctx.canvas.height - 60) {

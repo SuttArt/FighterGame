@@ -9,6 +9,225 @@ canvas.height = 576;
 
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+const TILE_CROPS = {
+    // large frames
+    stoneSquareFrame: {
+        x: 0,
+        y: 0,
+        width: 96,
+        height: 96
+    },
+
+    brownSquareFrame: {
+        x: 336,
+        y: 0,
+        width: 96,
+        height: 96
+    },
+
+    // top platforms
+    earthPlatformLong: {
+        x: 120,
+        y: 0,
+        width: 96,
+        height: 24
+    },
+
+    earthPlatform: {
+        x: 120,
+        y: 216,
+        width: 72,
+        height: 24
+    },
+
+    brickPlatform: {
+        x: 120,
+        y: 168,
+        width: 72,
+        height: 24
+    },
+
+    darkStonePlatform: {
+        x: 120,
+        y: 264,
+        width: 72,
+        height: 24
+    },
+
+    earthPlatformShort: {
+        x: 288,
+        y: 145,
+        width: 48,
+        height: 24
+    },
+
+    earthPlatformShortLower: {
+        x: 288,
+        y: 192,
+        width: 48,
+        height: 24
+    },
+
+    stonePlatformShort: {
+        x: 288,
+        y: 240,
+        width: 48,
+        height: 24
+    },
+
+    brownPlatformShort: {
+        x: 360,
+        y: 192,
+        width: 48,
+        height: 24
+    },
+
+    brownPlatformSmall: {
+        x: 384,
+        y: 312,
+        width: 48,
+        height: 24
+    },
+
+    // long bottom platform
+    stoneGroundLong: {
+        x: 120,
+        y: 312,
+        width: 240,
+        height: 48
+    },
+
+    // small single blocks
+    earthBlockSmallTop: {
+        x: 240,
+        y: 0,
+        width: 24,
+        height: 24
+    },
+
+    stoneBlockSmallTop: {
+        x: 288,
+        y: 0,
+        width: 24,
+        height: 24
+    },
+
+    earthBlockSmallUpper: {
+        x: 144,
+        y: 48,
+        width: 24,
+        height: 24
+    },
+
+    stoneBlockSmallUpper: {
+        x: 240,
+        y: 48,
+        width: 24,
+        height: 24
+    },
+
+    earthBlockSmallLeft: {
+        x: 120,
+        y: 72,
+        width: 24,
+        height: 24
+    },
+
+    earthBlockSmallRight: {
+        x: 168,
+        y: 72,
+        width: 24,
+        height: 24
+    },
+
+    stoneBlockSmallLeft: {
+        x: 216,
+        y: 72,
+        width: 24,
+        height: 24
+    },
+
+    stoneBlockSmallRight: {
+        x: 264,
+        y: 72,
+        width: 24,
+        height: 24
+    },
+
+    stoneBlockSmallMiddle: {
+        x: 240,
+        y: 96,
+        width: 24,
+        height: 24
+    },
+
+    // vertical pieces
+    earthVerticalSmall: {
+        x: 144,
+        y: 96,
+        width: 24,
+        height: 48
+    },
+
+    stoneVerticalTall: {
+        x: 216,
+        y: 144,
+        width: 48,
+        height: 120
+    },
+
+    brownVerticalSmall: {
+        x: 360,
+        y: 120,
+        width: 24,
+        height: 48
+    },
+
+    brownVerticalRounded: {
+        x: 360,
+        y: 240,
+        width: 24,
+        height: 48
+    },
+
+    brownWallTopRight: {
+        x: 456,
+        y: 0,
+        width: 48,
+        height: 72
+    },
+
+    brownWallLargeRight: {
+        x: 384,
+        y: 120,
+        width: 120,
+        height: 240
+    },
+
+    // roofs / slopes
+    grayRoof: {
+        x: 0,
+        y: 120,
+        width: 96,
+        height: 48
+    },
+
+    orangeRoof: {
+        x: 0,
+        y: 168,
+        width: 96,
+        height: 48
+    },
+
+    // big wall block
+    stoneWallLargeBottomLeft: {
+        x: 0,
+        y: 240,
+        width: 96,
+        height: 120
+    }
+};
+
 // just calculated it. I know, that my background has size of 320x180
 // My canvas is 1024x576, what make 1024/320 = 3.2 and 576/180 = 3.2
 const backgroundScale = 3.2
@@ -48,13 +267,162 @@ const background = [
         height: canvas.height,
         scale: backgroundScale,
     }),
+    new Sprite({
+        position: {
+            x: 0,
+            y: 515,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/oak_woods_tileset.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+        crop: TILE_CROPS.earthPlatform
+    }),
+    new Sprite({
+        position: {
+            x: 120,
+            y: 515,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/oak_woods_tileset.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+        crop: TILE_CROPS.earthPlatform
+    }),
+    new Sprite({
+        position: {
+            x: 348,
+            y: 515,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/oak_woods_tileset.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+        crop: TILE_CROPS.earthPlatformShort
+    }),
+    new Sprite({
+        position: {
+            x: 499,
+            y: 515,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/oak_woods_tileset.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+        crop: TILE_CROPS.brickPlatform
+    }),
+    new Sprite({
+        position: {
+            x: 727,
+            y: 515,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/oak_woods_tileset.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+        crop: TILE_CROPS.brickPlatform
+    }),
+    new Sprite({
+        position: {
+            x: 955,
+            y: 515,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/oak_woods_tileset.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+        crop: TILE_CROPS.stonePlatformShort
+    }),
+    new Sprite({
+        position: {
+            x: 0,
+            y: 454,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/fence_1.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+    }),
+    new Sprite({
+        position: {
+            x: 220,
+            y: 499,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/grass_2.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+    }),
+    new Sprite({
+        position: {
+            x: 250,
+            y: 454,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/fence_2.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+    }),
+    new Sprite({
+        position: {
+            x: 470,
+            y: 457,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/rock_3.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+    }),
+    new Sprite({
+        position: {
+            x: 470,
+            y: 457,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/rock_3.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+    }),
+    new Sprite({
+        position: {
+            x: 460,
+            y: 371,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/lamp.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: 2.5,
+    }),
+    new Sprite({
+        position: {
+            x: 930,
+            y: 415,
+        },
+        canvRef: {canvas, ctx},
+        imageSrc: '../assets/background/sign.png',
+        width: canvas.width,
+        height: canvas.height,
+        scale: backgroundScale,
+    }),
 ]
 
 // define shop sprite
 const shop = new Sprite({
     position: {
         x: 600,
-        y: 130,
+        y: 163,
     },
     canvRef: {canvas, ctx},
     imageSrc: '../assets/shop_anim.png',
@@ -117,7 +485,7 @@ const player_1 = new Fighter(
 // define second player
 const player_2 = new Fighter(
     {
-        position: {x: 400, y: 0},
+        position: {x: 950, y: 0},
         canvRef: {canvas, ctx},
         velocity: {x: 0, y: 10},
         color: 'blue',
@@ -129,10 +497,11 @@ const player_2 = new Fighter(
             width: 175,
             height: 50,
         },
+        flip: true,
         imageSrc: '../assets/player_2/idle.png',
         framesMax: 4,
         scale: 2.5,
-        offset: {x: 215, y: 157},
+        offset: {x: 215, y: 170},
         sprites: {
             idle: {
                 imageSrc: '../assets/player_2/idle.png',
